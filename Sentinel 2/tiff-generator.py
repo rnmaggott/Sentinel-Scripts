@@ -17,7 +17,7 @@ def get_immediate_subdirectories(a_dir):
             if os.path.isdir(os.path.join(a_dir, name))]
 
 
-def generate_geotiffs(inputProductPath, outputPath):
+def generate_geotiffs(inputProductPath, outputPath, repoPath):
 
 	basename =  os.path.basename(inputProductPath)
 	if os.path.isdir(outputPath + basename[:-3] + "SAFE") :
@@ -52,6 +52,10 @@ def generate_geotiffs(inputProductPath, outputPath):
 		params.append(granule)
 
 	gdal_merge.main(params)
+
+	os.rename(merged, repoPath + productName + ".tif")
+
+
 
 
 def generate_all_bands(unprocessedBandPath, granule, outputPathSubdirectory):
@@ -102,14 +106,15 @@ def generate_all_bands(unprocessedBandPath, granule, outputPathSubdirectory):
 
 
 
-outputPath = '../Output/'
+outputPath = input("Please enter a temporary storage path: ")
+repoPath = input("Please enter the dataset directory in your repo: ")
 readline.set_completer_delims(' \t\n;')
 readline.parse_and_bind("tab: complete")
 readline.set_completer(complete)
-inputPath = input("Input Path? ")
+inputPath = input("Please enter the input path (path to zip): ")
 
 start_time = time.time()
 
-generate_geotiffs(inputPath, outputPath)
+generate_geotiffs(inputPath, outputPath, repoPath)
 
 print("--- %s seconds ---" % (time.time() - start_time))
