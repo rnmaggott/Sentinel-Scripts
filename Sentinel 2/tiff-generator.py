@@ -67,22 +67,10 @@ def generate_all_bands(unprocessedBandPath, granule, outputPathSubdirectory):
 
 	outPutFullPath = outputPathSubdirectory + "/IMAGE_DATA/" + outPutTiff
 	outPutFullVrt = outputPathSubdirectory + "/IMAGE_DATA/" + outPutVRT
-	inputPath = unprocessedBandPath + granuleBandTemplate
 
-	bands = {"band_01" :  inputPath + "B01.jp2",
-	"band_02" :  inputPath + "B02.jp2",
-	"band_03" :  inputPath + "B03.jp2",
-	"band_04" :  inputPath + "B04.jp2",
-	"band_05" :  inputPath + "B05.jp2",
-	"band_06" :  inputPath + "B06.jp2",
-	"band_07" :  inputPath + "B07.jp2",
-	"band_08" :  inputPath + "B08.jp2",
-	"band_8A" :  inputPath + "B8A.jp2",
-	"band_09" :  inputPath + "B09.jp2",
-	"band_10" :  inputPath + "B10.jp2",
-	"band_11" :  inputPath + "B11.jp2",
-	"band_12" :  inputPath + "B12.jp2"}
-
+	bands = {}
+	for index, file in enumerate(os.listdir(unprocessedBandPath)):
+		bands["band_%02d" % (index + 1)] = unprocessedBandPath + file
 
 	cmd = ['gdalbuildvrt', '-resolution', 'user', '-tr' ,'20', '20', '-separate' ,outPutFullVrt]
 
